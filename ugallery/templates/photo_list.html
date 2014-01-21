@@ -1,0 +1,19 @@
+
+{% load url from future %}
+{% load thumbnail %}
+
+
+{% for photo in object_list %}
+
+<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 ugallery-no-padding ugallery-no-space" id="ugallery-photo-container-{{ photo.id }}">
+    <div class="thumbnail ugallery-thumbnail">
+        <a href="{% url 'gallery-view-photo' photo.pk %}" title="{{ photo.title }}">
+            <img src="{{ photo.photo.small.url }}" title="{{ photo.title }} - {{ photo.date|date:"d/m/Y" }}" class="img-responsive" alt="{{ photo.title }}">
+        </a>
+        {% if user.is_authenticated %}
+        <a href="#" title="Delete this picture" onclick="delete_photo({{ photo.id }})" class="ugallery-delete-button"><button type="button" class="btn btn-mini btn-danger"><strong>x</strong></button></a>
+        {% endif %}
+    </div>
+</div>
+
+{% endfor %}

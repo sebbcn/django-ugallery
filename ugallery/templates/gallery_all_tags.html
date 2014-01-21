@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load url from future %}
+
+{% block extras_styles %}
+<link href="{% static 'ugallery/css/gallery.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
+{% block content %}
+<br><br>
+<div class="row" id='gallery'>  
+    
+    <div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 text-center" id="gallery-content">
+    <h2>Tags</h2><br>
+    {% for tag in tags %}
+    	<a href="{% url 'gallery-tagged' tag.slug %}" title="{{ tag.name|capfirst }}">
+        	<span class="label label-info gallery-label">
+        		{{ tag.name|capfirst }}
+        	</span></a>&nbsp;
+        {% if forloop.counter|divisibleby:7 %}<br>{% endif %}
+    {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock %}

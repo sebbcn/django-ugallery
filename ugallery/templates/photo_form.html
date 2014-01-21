@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load url from future %}
+{% block content %}
+<br><br>
+
+<h2>Poster de nouvelles photos</h2>
+<br>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+
+		<form role="form" enctype="multipart/form-data" class="form-inline" method="POST" action=".">
+		{% csrf_token %}
+		{{ formset.management_form }}
+        {% for form in formset %}
+        	{% if forloop.counter == 1 %}
+        		<div class="form-group">
+        	{% else %}
+        		<div class="form-group hide" >
+        	{% endif %}
+        	{{ form.as_p }}
+        	<hr>
+        	</div>
+        	
+        {% endfor %}<br>
+        <button class="btn btn-success" type="button" onclick="add_photo();"><strong>+</strong></button>
+		<button class="btn btn-info" type="submit">Envoyer</button>
+		<a href="{% url 'gallery' %}"><button class="btn btn-default" type="button">Revenir a la gallerie</button></a>
+		</form>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+var add_photo = function() { $('.form-group.hide').first().removeClass('hide'); window.scrollBy(0,300); };
+</script>
+
+{% endblock %}
+
+

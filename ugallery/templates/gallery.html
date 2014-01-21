@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load url from future %}
+
+{% block extras_styles %}
+<link href="{% static 'ugallery/css/gallery.css' %}" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="{% static 'ugallery/css/jquery.autocomplete.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row" id='ugallery'>  
+    <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1" id="ugallery-content">
+
+    <h2>Photos{% if tag %} - {{ tag.name }}{% endif %}</h2>
+        <div class="row" id="ugallery-tags">
+            <div id="most_common_tags" class="col-xs-12 col-sm-8 col-md-8">
+                <a href="{% url 'gallery' %}" title="Voir tout"><span class="label label-info ugallery-label">Voir tout</span></a>
+                {% for tag in most_common_tags %}
+                <a href="{% url 'gallery-tagged' tag.slug %}" title="{{ tag.name|capfirst }}">
+                    <span class="label label-info ugallery-label">{{ tag.name|capfirst }}</span></a>
+                {% endfor %}
+                <a href="{% url 'gallery-all-tags' %}" title="Tous les tags"><span class="label label-info">...</span></a>
+
+            </div>
+            
+            <div id="ugallery-search" class="col-xs-6 col-sm-3 col-md-3">
+                <input id="ugallery-search-input" type="text" class="form-control" autocomplete="off" placeholder="Rechercher un tag"></input>
+            </div>
+
+        </div>
+
+        {% if user.is_authenticated %}
+                <div class="row">
+                    <div class="text-center"><br>
+                    <a href="{% url 'gallery-add-photo' %}">
+                        <button type="button" class="btn btn-mini btn-success" title="Add a photo">+photo</button>
+                    </a><br><br>
+                    </div>
+                </div>                
+        {% endif %}
+
+    </div>
+    <div id="ugallery-page" style="display: none;" data-page="0"></div>
+</div>
+
+<div class="row" id="ugallery-bottom">
+    <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
+        <div id="ugallery-loader" class="text-center" style="display: none;"><img src="{% static 'ugallery/img/loading.gif' %}"></div>
+        <div class="alert alert-info" >
+            <a href="{{ load_url }}" id='ugallery-load-more-photos' title="See more photos">
+                &nbsp;See more photos
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extras_scripts %} 
+<script src="{% static 'ugallery/js/jquery.autocomplete.js' %}" type="text/javascript"></script>
+<script src="{% static 'ugallery/js/gallery.js' %}"></script>
+{% endblock %}
